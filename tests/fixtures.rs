@@ -14,7 +14,6 @@ fn using_local_variables() {
         currency: "EUR",
     };
 
-    assert_eq!(payment.payee, &restaurant);
     assert_eq!(payment.payee.name(), "We make Pizza!");
     assert_eq!(payment.payee.iban(), "GB99ABCD12345612345678");
     assert_eq!(payment.amount, 1000);

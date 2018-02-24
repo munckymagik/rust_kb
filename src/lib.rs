@@ -14,8 +14,8 @@ impl<'a> Payable for Restaurant<'a> {
     fn iban(&self) -> &str { self.iban }
 }
 
-pub struct Payment<'a, A: Payable + 'a> {
-    pub payee: &'a A,
+pub struct Payment<'a> {
+    pub payee: &'a Payable,
     pub amount: i64,
     pub currency: &'a str,
 }
