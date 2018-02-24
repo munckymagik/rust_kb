@@ -17,6 +17,26 @@ fn compile_time_conversion_checking() {
 }
 
 #[test]
+fn compile_time_marker_trait_checking() {
+    trait MarkerTrait {};
+
+    // Compile time type checker helper function
+    fn is_ok<A: MarkerTrait>(_: A)
+    {
+    }
+
+    struct WrapperOne<A>(A);
+    impl<A> MarkerTrait for WrapperOne<A> {};
+    is_ok(WrapperOne(1));
+
+    // struct WrapperTwo<A>(A);
+    // Won't compile!
+    // is_ok(WrapperTwo(1));
+    // ^^^^^ the trait `compile_time_marker_trait_checking::MarkerTrait` is not implemented for
+    //       `compile_time_marker_trait_checking::WrapperTwo<{integer}>`
+}
+
+#[test]
 fn compile_time_send_safe_checking() {
     trait MarkerTrait<A> {};
 
