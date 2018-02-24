@@ -6,7 +6,7 @@ use testing_rust::*;
 fn using_local_variables() {
     let restaurant = Restaurant {
         name: "We make Pizza!",
-        iban: "GB99ABCD12345612345678"
+        iban: "GB99ABCD12345612345678",
     };
     let payment = Payment {
         payee: &restaurant,
@@ -24,7 +24,7 @@ fn using_local_variables() {
 fn shadowing_to_override_variables_context() {
     let restaurant = Restaurant {
         name: "We make Pizza!",
-        iban: "GB99ABCD12345612345678"
+        iban: "GB99ABCD12345612345678",
     };
     let payment = Payment {
         payee: &restaurant,
@@ -62,7 +62,7 @@ fn shadowing_to_reassign_without_mutating_value() {
 
     let restaurant = Restaurant {
         name: "We make Pizza!",
-        iban: "GB99ABCD12345612345678"
+        iban: "GB99ABCD12345612345678",
     };
 
     let original_restaurant = OriginalRestaurant(&restaurant);
@@ -71,7 +71,7 @@ fn shadowing_to_reassign_without_mutating_value() {
 
     let restaurant = Restaurant {
         name: "We also make Pizza!",
-        iban: "GB01ABCD01234501234567"
+        iban: "GB01ABCD01234501234567",
     };
 
     assert_ne!(original_restaurant.0, &restaurant);

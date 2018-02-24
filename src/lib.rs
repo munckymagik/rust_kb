@@ -6,12 +6,16 @@ pub trait Payable {
 #[derive(Debug, PartialEq)]
 pub struct Restaurant<'a> {
     pub name: &'a str,
-    pub iban: &'a str
+    pub iban: &'a str,
 }
 
 impl<'a> Payable for Restaurant<'a> {
-    fn name(&self) -> &str { self.name }
-    fn iban(&self) -> &str { self.iban }
+    fn name(&self) -> &str {
+        self.name
+    }
+    fn iban(&self) -> &str {
+        self.iban
+    }
 }
 
 pub struct Payment<'a> {
