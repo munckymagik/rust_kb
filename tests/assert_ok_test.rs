@@ -6,7 +6,7 @@ macro_rules! assert_ok {
     ($e:expr) => (
         match $e {
             Ok(_) => (),
-            Err(e) => panic!("assert_ok!({}) failed with: {}", stringify!($e), e),
+            Err(e) => panic!("`{}` failed with: {}", stringify!($e), e),
         }
     )
 }
@@ -43,7 +43,7 @@ fn test_assert_ok_err_examples() {
 
     assert_panics!(
         assert_ok!(return_err()),
-        "assert_ok!(return_err()) failed with: Oh no!"
+        "`return_err()` failed with: Oh no!"
     );
     // ---- assert_ok_examples stdout ----
     //      thread 'assert_ok_examples' panicked at 'assert_ok!(return_err()) failed with: Oh no!',
