@@ -3,10 +3,12 @@ mod assert_panics;
 use std::fmt::Display;
 
 macro_rules! assert_ok {
-    ($e:expr) => (match $e {
-        Ok(e) => e,
-        Err(e) => panic!("assert_ok!({}) failed with: {}", stringify!($e), e),
-    })
+    ($e:expr) => (
+        match $e {
+            Ok(_) => (),
+            Err(e) => panic!("assert_ok!({}) failed with: {}", stringify!($e), e),
+        }
+    )
 }
 
 fn fn_assert_ok<T, E: Display>(actual: Result<T, E>) {
