@@ -17,15 +17,13 @@ macro_rules! assert_panics {
       match result {
         Ok(_) => panic!("`{}` did not cause an error", stringify!($panicking_expr)),
         Err(ref boxed_any) => {
-          let cause: &str;
-
-          if let Some(c) = boxed_any.downcast_ref::<&str>() {
-            cause = c;
-          } else if let Some(c) = boxed_any.downcast_ref::<String>() {
-            cause = &c;
-          } else {
-            panic!("Cause of panic is not a String or a &str");
-          }
+          let cause = if let Some(&str_slice) = boxed_any.downcast_ref::<&str>() {
+                        str_slice
+                      } else if let Some(string) = boxed_any.downcast_ref::<String>() {
+                        &string
+                      } else {
+                        panic!("Cause of panic is not a String or a &str");
+                      };
 
           assert_eq!(cause, $expected_cause);
         }
