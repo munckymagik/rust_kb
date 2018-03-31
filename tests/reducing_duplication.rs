@@ -23,12 +23,14 @@ fn assert_ok_examples() {
   fn_assert_ok(return_ok());
   // fn_assert_ok(return_err());
   // ---- assert_ok_examples stdout ----
-  // 	thread 'assert_ok_examples' panicked at 'Expected ok but was Err with: Oh no!', tests/reducing_duplication.rs:14:17
+  //      thread 'assert_ok_examples' panicked at 'Expected ok but was Err with: Oh no!',
+  //      tests/reducing_duplication.rs:14:17
 
   assert_ok!(return_ok());
   // assert_ok!(return_err());
   // ---- assert_ok_examples stdout ----
-  //      thread 'assert_ok_examples' panicked at 'assert_ok!(return_err()) failed with: Oh no!', tests/reducing_duplication.rs:14:3
+  //      thread 'assert_ok_examples' panicked at 'assert_ok!(return_err()) failed with: Oh no!',
+  //      tests/reducing_duplication.rs:14:3
 }
 
 #[test]
