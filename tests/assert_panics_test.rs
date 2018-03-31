@@ -27,6 +27,14 @@ fn test_assert_panics_with_str_panic_objects() {
         ),
         "`1 + 1` did not cause an error"
     );
+
+    assert_panics!(
+        assert_panics!(
+            { () },
+            "Expecting some error that won't happen"
+        ),
+        "`{ () }` did not cause an error"
+    );
 }
 
 #[test]
