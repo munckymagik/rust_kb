@@ -11,7 +11,7 @@ macro_rules! assert_ok {
 fn fn_assert_ok<T, E: Display>(actual: Result<T, E>) {
   match actual {
       Ok(_)  => (),
-      Err(e) => panic!("Expected ok but was Err with: {}", e),
+      Err(e) => panic!("Expected Ok value but was Err with: {}", e),
   }
 }
 
@@ -23,7 +23,7 @@ fn assert_ok_examples() {
   fn_assert_ok(return_ok());
   // fn_assert_ok(return_err());
   // ---- assert_ok_examples stdout ----
-  //      thread 'assert_ok_examples' panicked at 'Expected ok but was Err with: Oh no!',
+  //      thread 'assert_ok_examples' panicked at 'Expected Ok value but was Err with: Oh no!',
   //      tests/reducing_duplication.rs:14:17
 
   assert_ok!(return_ok());
