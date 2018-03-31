@@ -21,9 +21,7 @@ fn compile_time_marker_trait_checking() {
     trait MarkerTrait {};
 
     // Compile time type checker helper function
-    fn is_ok<A: MarkerTrait>(_: A)
-    {
-    }
+    fn is_ok<A: MarkerTrait>(_: A) {}
 
     struct WrapperOne<A>(A);
     impl<A> MarkerTrait for WrapperOne<A> {};
