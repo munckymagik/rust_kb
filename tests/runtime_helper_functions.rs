@@ -6,7 +6,9 @@ fn assert_empty<T: IntoIterator, F: Fn() -> T>(f: F) {
 #[test]
 fn test_empty() {
     // A function scope factory function
-    fn empty() -> Vec<i32> { vec![] }
+    fn empty() -> Vec<i32> {
+        vec![]
+    }
 
     assert_empty(|| empty());
     assert_empty(|| {
@@ -19,7 +21,9 @@ fn test_empty() {
 #[test]
 fn test_empty_with_join() {
     // A function scope factory function
-    fn empty() -> Vec<u64> { vec![] }
+    fn empty() -> Vec<u64> {
+        vec![]
+    }
 
     // A function scope helper
     fn join(mut a: Vec<u64>, mut b: Vec<u64>) -> Vec<u64> {
