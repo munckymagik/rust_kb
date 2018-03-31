@@ -1,4 +1,5 @@
-use std::panic;
+#[macro_use]
+mod assert_panics;
 use std::fmt::Display;
 
 macro_rules! assert_ok {
@@ -6,47 +7,6 @@ macro_rules! assert_ok {
         Ok(e) => e,
         Err(e) => panic!("assert_ok!({}) failed with: {}", stringify!($e), e),
     })
-}
-
-macro_rules! assert_panics {
-    ($panicking_expr:expr, $expected_cause:expr) => {
-        {
-            let result = panic::catch_unwind(|| {
-                $panicking_expr
-            });
-            match result {
-                Ok(_) => panic!("`{}` did not cause an error", stringify!($panicking_expr)),
-                Err(ref boxed_any) => {
-                    let cause = if let Some(&str_slice) = boxed_any.downcast_ref::<&str>() {
-                                    str_slice
-                                } else if let Some(string) = boxed_any.downcast_ref::<String>() {
-                                    &string
-                                } else {
-                                    panic!("Cause of panic is not a String or a &str");
-                                };
-
-                    assert_eq!(cause, $expected_cause);
-                }
-            }
-        }
-    };
-    ($panicking_expr:expr, $expected_cause:expr, $cause_type:ty) => {
-        {
-            let result = panic::catch_unwind(|| {
-                $panicking_expr
-            });
-            match result {
-                Ok(_) => panic!("`{}` did not cause an error", stringify!($panicking_expr)),
-                Err(ref boxed_any) => {
-                    let cause: &$cause_type = boxed_any
-                        .downcast_ref::<$cause_type>()
-                        .expect(&format!("Cause of panic is not a {}", stringify!($cause_type)));
-
-                    assert_eq!(cause, &$expected_cause);
-                }
-            }
-        }
-    }
 }
 
 fn fn_assert_ok<T, E: Display>(actual: Result<T, E>) {
@@ -86,50 +46,4 @@ fn test_assert_ok_err_examples() {
     // ---- assert_ok_examples stdout ----
     //      thread 'assert_ok_examples' panicked at 'assert_ok!(return_err()) failed with: Oh no!',
     //      tests/reducing_duplication.rs:14:3
-}
-
-#[test]
-fn assert_panic_unwind_example() {
-    assert_panics!(panic!("oh my god"), "oh my god");
-    assert_panics!(
-        Err::<(), &str>("something").unwrap(),
-        "called `Result::unwrap()` on an `Err` value: \"something\""
-    );
-    assert_panics!(
-        panic!("oh my god, {} was not {}", 1, 2),
-        "oh my god, 1 was not 2"
-    );
-    assert_panics!(
-        assert_ok!(return_err()),
-        "assert_ok!(return_err()) failed with: Oh no!"
-    );
-
-    assert_panics!(
-        assert_panics!((), "Expecting some error that won't happen"),
-        "`()` did not cause an error"
-    );
-
-    assert_panics!(
-        assert_panics!(
-            assert_ok!(return_ok()),
-            "Expecting some error that won't happen"
-        ),
-        "`assert_ok!(return_ok (  ))` did not cause an error"
-    );
-
-    #[derive(PartialEq, Debug)]
-    struct NotAString;
-    assert_eq!(NotAString, NotAString);
-
-    assert_panics!(
-        assert_panics!(panic!(NotAString), "oh my god"),
-        "Cause of panic is not a String or a &str"
-    );
-
-    assert_panics!(panic!(NotAString), NotAString, NotAString);
-    type TempResult = Result<(), &'static str>;
-
-    assert_panics!(panic!(Err::<(), &'static str>("whatever")),
-                   Err::<(), &'static str>("whatever"),
-                   TempResult);
 }
