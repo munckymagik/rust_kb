@@ -2,7 +2,7 @@
 mod assert_panics;
 
 #[test]
-fn test_assert_panic_with_str_panic_objects() {
+fn test_assert_panics_with_str_panic_objects() {
     assert_panics!(panic!("oh my god"), "oh my god");
 
     assert_panics!(
@@ -30,20 +30,22 @@ fn test_assert_panic_with_str_panic_objects() {
 }
 
 #[test]
-fn test_assert_panic_with_non_str_panic_objects() {
+fn test_assert_panics_with_non_str_panic_objects() {
     #[derive(PartialEq, Debug)]
     struct NotAString;
+
     assert_eq!(NotAString, NotAString);
+    assert_panics!(panic!(NotAString), NotAString, NotAString);
 
     assert_panics!(
         assert_panics!(panic!(NotAString), "oh my god"),
         "Cause of panic is not a String or a &str"
     );
 
-    assert_panics!(panic!(NotAString), NotAString, NotAString);
-    type TempResult = Result<(), &'static str>;
+    type TempResult<'a> = Result<(), &'a str>;
+    fn err(msg: &str) -> TempResult { Err(msg) }
 
-    assert_panics!(panic!(Err::<(), &'static str>("whatever")),
-                   Err::<(), &'static str>("whatever"),
+    assert_panics!(panic!(err("whatever")),
+                   err("whatever"),
                    TempResult);
 }
