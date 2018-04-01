@@ -21,18 +21,12 @@ fn test_assert_panics_with_str_panic_objects() {
     );
 
     assert_panics!(
-        assert_panics!(
-            1 + 1,
-            "Expecting some error that won't happen"
-        ),
+        assert_panics!(1 + 1, "Expecting some error that won't happen"),
         "`1 + 1` did not cause an error"
     );
 
     assert_panics!(
-        assert_panics!(
-            { () },
-            "Expecting some error that won't happen"
-        ),
+        assert_panics!({ () }, "Expecting some error that won't happen"),
         "`{ () }` did not cause an error"
     );
 }
@@ -51,9 +45,9 @@ fn test_assert_panics_with_non_str_panic_objects() {
     );
 
     type TempResult<'a> = Result<(), &'a str>;
-    fn err(msg: &str) -> TempResult { Err(msg) }
+    fn err(msg: &str) -> TempResult {
+        Err(msg)
+    }
 
-    assert_panics!(panic!(err("whatever")),
-                   err("whatever"),
-                   TempResult);
+    assert_panics!(panic!(err("whatever")), err("whatever"), TempResult);
 }
