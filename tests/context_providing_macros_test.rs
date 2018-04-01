@@ -15,6 +15,15 @@ fn test_context_providing_macros() {
     nested::test_module_path();
 
     assert_eq!(stringify!(1 + 1), "1 + 1");
-    // Note: results in different formatting than the original input
-    assert_eq!(stringify!(some_imaginary_code()), "some_imaginary_code (  )");
+    assert_eq!(
+        stringify!(some_imaginary_code()),
+        "some_imaginary_code (  )"
+    );
+    assert_eq!(
+        stringify!(struct Whatever<'a> {
+            i: i32,
+            s: &'a str
+        }),
+        "struct Whatever < 'a > { i : i32 , s : & 'a str }"
+    );
 }
