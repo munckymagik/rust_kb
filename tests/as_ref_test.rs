@@ -15,15 +15,17 @@ fn it_provides_a_way_to_pass_many_types_in() {
         }
     }
 
-    fn wants_i32<T: AsRef<i32>>(t: &T) -> &i32 {
-        t.as_ref()
+    fn wants_i32<T: AsRef<i32>>(t: T) -> i32 {
+        *t.as_ref()
     }
 
     let a = A(42);
-    assert_eq!(wants_i32(&a), &42);
+    // Can pass a reference
+    assert_eq!(wants_i32(&a), 42);
 
     let b = B(43);
-    assert_eq!(wants_i32(&b), &43);
+    // Can pass as a move
+    assert_eq!(wants_i32(b), 43);
 }
 
 #[test]
