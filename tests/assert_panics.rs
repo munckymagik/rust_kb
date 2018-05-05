@@ -1,3 +1,5 @@
+#[nowarn(unused_macros)]
+
 macro_rules! assert_panics {
     ($panicking_expr:expr, $expected_cause:expr) => {
         {
