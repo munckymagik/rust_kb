@@ -1,6 +1,4 @@
-use std::ffi::{
-    CStr,
-};
+use std::ffi::CStr;
 
 #[test]
 fn when_there_is_a_trailing_nul() {

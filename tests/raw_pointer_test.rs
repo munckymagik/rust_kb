@@ -6,7 +6,9 @@
 #[test]
 fn test_refs_cast_to_pointers_automatically() {
     fn expects_a_pointer(pa: *const u32) {
-        unsafe { assert_eq!(*pa, 42); }
+        unsafe {
+            assert_eq!(*pa, 42);
+        }
     }
 
     let a = 42u32;
