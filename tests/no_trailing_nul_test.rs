@@ -5,7 +5,7 @@ macro_rules! debug_assert_no_trailing_nul {
     ($str_like:expr) => {
         debug_assert!(
             $str_like.as_bytes().last().map_or(true, |c| *c != b'\0'),
-            "{:?} had a trailing nul",
+            "{:?} has a trailing nul",
             $str_like
         );
     };
@@ -22,7 +22,7 @@ fn ensure_no_trailing_nul() {
     let c = "hello\0";
     assert_panics!(
         debug_assert_no_trailing_nul!(c),
-        "\"hello\\u{0}\" had a trailing nul"
+        "\"hello\\u{0}\" has a trailing nul"
     );
 
     println!("{}", b);
