@@ -41,6 +41,7 @@ fn compile_time_send_safe_checking() {
     struct WrapperOne<A>(A);
     impl<A> MarkerTrait<A> for WrapperOne<A> {};
 
+    #[allow(dead_code)]
     struct WrapperTwo<A>(A);
 
     // Compile time type checker helper function
