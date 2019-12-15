@@ -1,6 +1,5 @@
-extern crate testing_rust;
-
-use testing_rust::*;
+extern crate standard;
+use standard::*;
 
 #[test]
 fn using_local_variables() {

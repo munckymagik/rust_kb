@@ -11,9 +11,9 @@ macro_rules! assert_panics {
                 Ok(_) => panic!("`{}` did not cause an error", stringify!($panicking_expr)),
                 Err(ref boxed_any) => {
                     let cause = if let Some(&str_slice) = boxed_any.downcast_ref::<&str>() {
-                                    str_slice
+                                    str_slice.to_owned()
                                 } else if let Some(string) = boxed_any.downcast_ref::<String>() {
-                                    &string
+                                    string.clone()
                                 } else {
                                     panic!("Cause of panic is not a String or a &str");
                                 };
