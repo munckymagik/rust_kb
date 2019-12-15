@@ -19,7 +19,7 @@ impl<'a> Payable for Restaurant<'a> {
 }
 
 pub struct Payment<'a> {
-    pub payee: &'a Payable,
+    pub payee: &'a dyn Payable,
     pub amount: i64,
     pub currency: &'a str,
 }

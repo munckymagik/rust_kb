@@ -38,7 +38,7 @@ mod type_size_not_known_at_compile_time {
     #[test]
     fn example_returning_closure_from_a_function() {
         // See: https://doc.rust-lang.org/book/first-edition/closures.html#returning-closures
-        fn return_a_closure() -> Box<Fn(i32) -> i32> {
+        fn return_a_closure() -> Box<dyn Fn(i32) -> i32> {
             let num = 5;
             Box::new(move |x| x + num)
         }
