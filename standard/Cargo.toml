@@ -1,0 +1,6 @@
+[package]
+name = "standard"
+version = "0.1.0"
+authors = ["Dan Munckton <dangit@munckfish.net>"]
+
+[dependencies]
