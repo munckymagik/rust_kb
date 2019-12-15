@@ -45,9 +45,9 @@ fn test_assert_panics_with_non_str_panic_objects() {
     );
 
     type TempResult<'a> = Result<(), &'a str>;
-    fn err(msg: &str) -> TempResult {
+    fn err(msg: &str) -> TempResult<'_> {
         Err(msg)
     }
 
-    assert_panics!(panic!(err("whatever")), err("whatever"), TempResult);
+    assert_panics!(panic!(err("whatever")), err("whatever"), TempResult<'_>);
 }

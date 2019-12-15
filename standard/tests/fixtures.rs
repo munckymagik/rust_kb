@@ -1,4 +1,4 @@
-extern crate standard;
+
 use standard::*;
 
 #[test]
