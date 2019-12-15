@@ -3,5 +3,5 @@ static STATICALLY_CONCATED_STR: &str =
 
 #[test]
 fn test_statically_concat_env_vars() {
-    assert_eq!(STATICALLY_CONCATED_STR, "testing_rust 0.1.0");
+    assert_eq!(STATICALLY_CONCATED_STR, "standard 0.1.0");
 }
