@@ -3,6 +3,7 @@
 
 use std::{
     future::Future,
+    pin::Pin,
     sync::mpsc::{Receiver, SyncSender, sync_channel},
     sync::{Arc, Mutex},
     task::{Context, Poll},
@@ -18,12 +19,24 @@ fn main() {
 
     spawner.spawn(async {
         println!("hello!");
+        println!("{}", HelloFuture.await);
     });
 
     // signals to the executor that no omre tasks will be incoming
     drop(spawner);
 
     executor.run();
+}
+
+// A future that just says hello
+struct HelloFuture;
+
+impl Future for HelloFuture {
+    type Output = String;
+
+    fn poll(self: Pin<&mut Self>, _cx: &mut Context) -> Poll<Self::Output> {
+        Poll::Ready("Hello from the future".to_string())
+    }
 }
 
 /// Task executor that receives tasks off of a channel and runs them.
