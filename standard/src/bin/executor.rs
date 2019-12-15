@@ -6,7 +6,9 @@ use std::{
     pin::Pin,
     sync::mpsc::{Receiver, SyncSender, sync_channel},
     sync::{Arc, Mutex},
-    task::{Context, Poll},
+    task::{Context, Poll, Waker},
+    thread,
+    time::Duration,
 };
 use futures::{
     future::BoxFuture,
@@ -19,6 +21,9 @@ fn main() {
 
     spawner.spawn(async {
         println!("hello!");
+        println!("waiting for 2 secs");
+        TimerFuture::new(Duration::from_secs(2)).await;
+        println!("waiting for HelloFuture ...");
         println!("{}", HelloFuture.await);
     });
 
@@ -28,7 +33,7 @@ fn main() {
     executor.run();
 }
 
-// A future that just says hello
+/// A future that just says hello
 struct HelloFuture;
 
 impl Future for HelloFuture {
@@ -36,6 +41,52 @@ impl Future for HelloFuture {
 
     fn poll(self: Pin<&mut Self>, _cx: &mut Context) -> Poll<Self::Output> {
         Poll::Ready("Hello from the future".to_string())
+    }
+}
+
+/// A timer future
+struct TimerFuture {
+    shared_state: Arc<Mutex<SharedState>>,
+}
+
+/// Shared state bewteen the timer and the waiting thread
+struct SharedState {
+    completed: bool,
+    waker: Option<Waker>,
+}
+
+impl Future for TimerFuture {
+    type Output = ();
+    fn poll(self: Pin<&mut Self>, cx: &mut Context) -> Poll<Self::Output> {
+        let mut shared_state = self.shared_state.lock().unwrap();
+        if shared_state.completed {
+            Poll::Ready(())
+        } else {
+            // Important to clone because TimerFuture can move between tasks
+            shared_state.waker = Some(cx.waker().clone());
+            Poll::Pending
+        }
+    }
+}
+
+impl TimerFuture {
+    fn new(duration: Duration) -> Self {
+        let shared_state = Arc::new(Mutex::new(SharedState {
+            completed: false,
+            waker: None,
+        }));
+
+        let thread_shared_state = shared_state.clone();
+        thread::spawn(move || {
+            thread::sleep(duration);
+            let mut shared_state = thread_shared_state.lock().unwrap();
+            shared_state.completed = true;
+            if let Some(waker) = shared_state.waker.take() {
+                waker.wake()
+            }
+        });
+
+        TimerFuture { shared_state }
     }
 }
 
