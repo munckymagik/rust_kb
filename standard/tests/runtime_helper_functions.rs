@@ -1,6 +1,6 @@
 // A file scope shared helper
-fn assert_empty<T: IntoIterator, F: Fn() -> T>(f: F) {
-    assert!(f().into_iter().count() == 0);
+fn assert_empty<T: AsRef<[U]>, U, F: Fn() -> T>(f: F) {
+    assert!(f().as_ref().is_empty());
 }
 
 #[test]
