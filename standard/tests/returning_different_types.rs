@@ -1,5 +1,7 @@
-/// This file explores various ways to control the return type of a function
-/// independently of its input types.
+//! This file explores various ways to control the return type of a function
+//! independently of its input types.
+
+#![allow(clippy::float_cmp)]
 
 // If we do not use type parameterization then we must provide specific
 // implementations of each function in order to convert from one type to one of

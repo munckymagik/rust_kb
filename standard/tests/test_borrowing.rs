@@ -1,6 +1,7 @@
 mod borrowing {
     #[test]
     fn can_use_previous_binding_after_passing_to_function_as_ref() {
+        #[allow(clippy::ptr_arg)]
         fn borrow_ownership(_v: &Vec<i64>) {
             // References are immutable too ...
             // v.push(4);

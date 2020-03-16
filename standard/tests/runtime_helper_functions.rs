@@ -10,7 +10,7 @@ fn test_empty() {
         vec![]
     }
 
-    assert_empty(|| empty());
+    assert_empty(empty);
     assert_empty(|| {
         let mut e = empty();
         e.append(&mut empty());
@@ -31,6 +31,6 @@ fn test_empty_with_join() {
         a
     }
 
-    assert_empty(|| empty());
+    assert_empty(empty);
     assert_empty(|| join(empty(), empty()));
 }

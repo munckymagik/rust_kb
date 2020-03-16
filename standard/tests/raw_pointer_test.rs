@@ -3,6 +3,8 @@
 // * https://doc.rust-lang.org/std/primitive.pointer.html
 // * https://doc.rust-lang.org/std/ptr/fn.null.html
 
+#![allow(clippy::float_cmp)]
+
 #[test]
 fn test_refs_cast_to_pointers_automatically() {
     fn expects_a_pointer(pa: *const u32) {
