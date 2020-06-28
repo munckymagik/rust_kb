@@ -25,7 +25,7 @@ fn main() {
         });
 
         // Read a size for our organization from the arguments
-        let size: u32 = std::env::args()
+        let size: usize = std::env::args()
             .nth(1)
             .expect("size: pass an numeric argument")
             .parse()
@@ -33,16 +33,20 @@ fn main() {
 
         // Step 1: Load input (a binary tree)
         input.advance_to(0); // Sets the time to t=0
-        for person in 0..size {
+        let mut person = worker.index();
+        while person < size {
             input.insert((person/2, person));
+            person += worker.peers();
         }
 
         // Step 2: make changes to the org structure
-        for person in 1..size {
+        let mut person = worker.index();
+        while person < size {
             // Sets the time to t=t+1
             input.advance_to(person);
             input.remove((person/2, person));
             input.insert((person/3, person));
+            person += worker.peers();
         }
 
     }).expect("computation terminated abnormally");
