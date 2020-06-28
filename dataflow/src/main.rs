@@ -8,7 +8,7 @@ fn main() {
         let mut input = InputSession::new();
 
         // define a new computation
-        worker.dataflow(|scope| {
+        let probe = worker.dataflow(|scope| {
             // create a new collection from our input
             let manages = input.to_collection(scope);
 
@@ -21,7 +21,7 @@ fn main() {
                 // .inspect(|(data, time, diff)| println!("(r, m): time={:?}, diff={:?}, data={:?}", time, diff, data))
                 .join(&manages)
                 // .inspect(|(data, time, diff)| println!("(p, (m, r)): time={:?}, diff={:?}, data={:?}", time, diff, data))
-                ;
+                .probe()
         });
 
         // Read a size for our organization from the arguments
@@ -39,13 +39,26 @@ fn main() {
             person += worker.peers();
         }
 
+        // Wait for data loading to complete
+        input.advance_to(1);
+        input.flush();
+        while probe.less_than(input.time()) {
+            worker.step();
+        }
+        println!("{:?}\tdata loaded", worker.timer().elapsed());
+
         // Step 2: make changes to the org structure
-        let mut person = worker.index();
+        let mut person = 1 + worker.index();
         while person < size {
             // Sets the time to t=t+1
-            input.advance_to(person);
             input.remove((person/2, person));
             input.insert((person/3, person));
+            input.advance_to(person);
+            input.flush();
+            while probe.less_than(input.time()) {
+                worker.step();
+            }
+            println!("{:?}\tstep {} complete", worker.timer().elapsed(), person);
             person += worker.peers();
         }
 
