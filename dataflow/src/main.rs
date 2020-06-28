@@ -13,24 +13,41 @@ fn main() {
             let manages = input.to_collection(scope);
 
             // if (m2, m1) and (m1, p), then output (m1, (m2, p))
+            // i.e. for each pair in the join where the report in pair 1 is the manager in pair 2
+            // output (person, (person's manager, person's report))
             manages
-                .inspect(|x| println!("in: {:?}", x))
-                .map(|(m2, m1)| (m1, m2))
+                .inspect(|(data, time, diff)| println!("(m, r): time={:?}, diff={:?}, data={:?}", time, diff, data))
+                .map(|(manager, report)| (report, manager)) // reverse so the report becomes the "key" for the join
+                .inspect(|(data, time, diff)| println!("(r, m): time={:?}, diff={:?}, data={:?}", time, diff, data))
                 .join(&manages)
-                .inspect(|x| println!("out: {:?}", x));
+                .inspect(|(data, time, diff)| println!("(p, (m, r)): time={:?}, diff={:?}, data={:?}", time, diff, data));
         });
 
         // Read a size for our organization from the arguments
-        let size = std::env::args()
+        let size: u32 = std::env::args()
             .nth(1)
-            .expect("pass an numeric argument")
+            .expect("size: pass an numeric argument")
             .parse()
-            .expect("argument must be an integer");
+            .expect("size: argument must be an integer");
+        let mods: u32 = std::env::args()
+            .nth(2)
+            .expect("mods: pass an numeric argument")
+            .parse()
+            .expect("mods: argument must be an integer");
 
-        // Load input (a binary tree)
-        input.advance_to(0);
+        // Step 1: Load input (a binary tree)
+        input.advance_to(0); // Sets the time to t=0
         for person in 0..size {
             input.insert((person/2, person));
+        }
+
+        // Step 2: make changes to the org structure
+        for n in 0..mods {
+            let person = n + 1;
+            // Sets the time to t=t+1
+            input.advance_to(person);
+            input.remove((person/2, person));
+            input.insert((person/3, person));
         }
 
     }).expect("computation terminated abnormally");
