@@ -1,2 +1,2 @@
 [workspace]
-members = ["standard", "tokio"]
+members = ["standard", "tokio", "container-experiment"]
