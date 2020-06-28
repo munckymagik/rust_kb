@@ -16,11 +16,12 @@ fn main() {
             // i.e. for each pair in the join where the report in pair 1 is the manager in pair 2
             // output (person, (person's manager, person's report))
             manages
-                .inspect(|(data, time, diff)| println!("(m, r): time={:?}, diff={:?}, data={:?}", time, diff, data))
+                // .inspect(|(data, time, diff)| println!("(m, r): time={:?}, diff={:?}, data={:?}", time, diff, data))
                 .map(|(manager, report)| (report, manager)) // reverse so the report becomes the "key" for the join
-                .inspect(|(data, time, diff)| println!("(r, m): time={:?}, diff={:?}, data={:?}", time, diff, data))
+                // .inspect(|(data, time, diff)| println!("(r, m): time={:?}, diff={:?}, data={:?}", time, diff, data))
                 .join(&manages)
-                .inspect(|(data, time, diff)| println!("(p, (m, r)): time={:?}, diff={:?}, data={:?}", time, diff, data));
+                // .inspect(|(data, time, diff)| println!("(p, (m, r)): time={:?}, diff={:?}, data={:?}", time, diff, data))
+                ;
         });
 
         // Read a size for our organization from the arguments
@@ -29,11 +30,6 @@ fn main() {
             .expect("size: pass an numeric argument")
             .parse()
             .expect("size: argument must be an integer");
-        let mods: u32 = std::env::args()
-            .nth(2)
-            .expect("mods: pass an numeric argument")
-            .parse()
-            .expect("mods: argument must be an integer");
 
         // Step 1: Load input (a binary tree)
         input.advance_to(0); // Sets the time to t=0
@@ -42,8 +38,7 @@ fn main() {
         }
 
         // Step 2: make changes to the org structure
-        for n in 0..mods {
-            let person = n + 1;
+        for person in 1..size {
             // Sets the time to t=t+1
             input.advance_to(person);
             input.remove((person/2, person));
