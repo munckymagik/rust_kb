@@ -14,9 +14,10 @@ fn main() {
 
             // if (m2, m1) and (m1, p), then output (m1, (m2, p))
             manages
+                .inspect(|x| println!("in: {:?}", x))
                 .map(|(m2, m1)| (m1, m2))
                 .join(&manages)
-                .inspect(|x| println!("{:?}", x));
+                .inspect(|x| println!("out: {:?}", x));
         });
 
         // Read a size for our organization from the arguments
