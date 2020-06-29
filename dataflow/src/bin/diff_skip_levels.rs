@@ -1,3 +1,5 @@
+// Example from: https://timelydataflow.github.io/differential-dataflow/introduction.html
+
 use differential_dataflow::input::InputSession;
 use differential_dataflow::operators::Join;
 
