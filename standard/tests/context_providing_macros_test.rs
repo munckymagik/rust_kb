@@ -17,7 +17,7 @@ fn test_context_providing_macros() {
     assert_eq!(stringify!(1 + 1), "1 + 1");
     assert_eq!(
         stringify!(some_imaginary_code()),
-        "some_imaginary_code ()"
+        "some_imaginary_code()"
     );
     assert_eq!(
         stringify!(struct Whatever<'a> {
