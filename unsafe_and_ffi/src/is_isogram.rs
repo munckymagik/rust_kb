@@ -7,16 +7,10 @@ use std::os::raw::{c_char, c_int};
 const NUM_ALPHAS: usize = 26;
 const NUL: c_char = b'\0' as c_char;
 
-mod ext {
-    use std::os::raw::c_int;
-    extern "C" {
-        pub fn tolower(c: c_int) -> c_int;
-        pub fn isalpha(c: c_int) -> c_int;
-    }
+extern "C" {
+    fn tolower(c: c_int) -> c_int;
+    fn isalpha(c: c_int) -> c_int;
 }
-
-// To avoid dead code warning without exposing publicly from module
-use ext::*;
 
 pub fn is_isogram(phrase: &CStr) -> bool {
     let mut counts = [0; NUM_ALPHAS];
