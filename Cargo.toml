@@ -1,2 +1,2 @@
 [workspace]
-members = ["standard", "tokio", "dataflow", "container-experiment"]
+members = ["standard", "tokio", "dataflow", "container-experiment", "unsafe_and_ffi"]
