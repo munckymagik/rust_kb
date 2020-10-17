@@ -1,2 +1,9 @@
 [workspace]
-members = ["standard", "tokio", "dataflow", "container-experiment", "unsafe_and_ffi"]
+members = [
+  "standard",
+  "tokio",
+  "dataflow",
+  "container-experiment",
+  "unsafe_and_ffi",
+  "linkedlists"
+]
